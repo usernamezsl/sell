@@ -53,7 +53,7 @@ public class OrderMasterServiceImpl implements OrderMasterService {
 
         String orderId = KeyUtil.getUniqueKey();
         BigDecimal orderAmount = new BigDecimal(BigInteger.ZERO);
-
+        orderDto.setOrderId(orderId);
         //List<CartDTO> cartDTOList = new ArrayList<>();
 
         //1.查询商品(数量,价格)
