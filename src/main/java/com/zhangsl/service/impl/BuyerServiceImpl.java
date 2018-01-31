@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by Administrator on 2018/1/30.
+ * Created by Zhangsl on 2018/1/30.
  */
 @Service
 public class BuyerServiceImpl implements BuyerService {
@@ -19,18 +19,30 @@ public class BuyerServiceImpl implements BuyerService {
 
     @Override
     public OrderDto findOrderOne(String openid, String orderId) {
-        OrderDto orderDto = mOrderMasterService.findOne(orderId);
-        if (!orderDto.getBuyerOpenid().equals(openid)) {
-            // TODO: 2018/1/30 打印日志 判断 openid={} 不匹配
-            throw new SellException(ResultEnum.OPEN_ID_ERROR);
-        }
+        OrderDto orderDto = checkOrderOwner(openid, orderId);
         return orderDto;
     }
 
     @Override
     public OrderDto cancelOrder(String openid, String orderId) {
-        OrderDto orderDto = findOrderOne(openid, orderId);
+        OrderDto orderDto = checkOrderOwner(openid, orderId);
+        if (orderDto == null) {
+            // TODO: 2018/1/30 打印日志 【取消订单】 查不到该订单
+            throw new SellException(ResultEnum.ORDER_NOT_EXIT);
+        }
         OrderDto result = mOrderMasterService.cancel(orderDto);
         return result;
+    }
+
+    private OrderDto checkOrderOwner(String openid, String orderId) {
+        OrderDto orderDto = mOrderMasterService.findOne(orderId);
+        if (orderDto == null) {
+            return null;
+        }
+        if (!orderDto.getBuyerOpenid().equalsIgnoreCase(openid)) {
+            // TODO: 2018/1/30 打印日志 【查询订单】 订单的openid不一致,openid={} 不匹配
+            throw new SellException(ResultEnum.ORDER_OWNER_ERROR);
+        }
+        return orderDto;
     }
 }

@@ -77,7 +77,6 @@ public class BuyerOrderController {
     @GetMapping(value = "/detail")
     public ResultVO<OrderDto> detail(@RequestParam(value = "openid") String openid,
                                      @RequestParam(value = "orderId") String orderId){
-        // TODO: 2018/1/30 不安全的做法，改进;
         OrderDto orderDto = mBuyerService.findOrderOne(openid, orderId);
         return ResultVOUtil.success(orderDto);
     }
@@ -86,7 +85,6 @@ public class BuyerOrderController {
     public ResultVO cancel(@RequestParam(value = "openid") String openid,
                              @RequestParam(value = "orderId") String orderId){
 
-        // TODO: 2018/1/30  不安全的做法，改进
         mBuyerService.cancelOrder(openid,orderId);
         return ResultVOUtil.success();
     }
