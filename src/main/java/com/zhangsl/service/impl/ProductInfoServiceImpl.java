@@ -24,30 +24,53 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     @Autowired
     ProductInfoRespository mProductInfoRespository;
 
+    /**
+     * 查询一条商品数据
+     * @param productInfoId
+     * @return
+     */
     @Override
     public ProductInfo findOne(String productInfoId) {
         ProductInfo productInfo = mProductInfoRespository.findOne(productInfoId);
         return productInfo;
     }
 
+    /**
+     * 查询所有已上架的商品
+     * @return
+     */
     @Override
     public List<ProductInfo> findUpAll() {
         List<ProductInfo> productInfoList = mProductInfoRespository.findByProductStatus(ProductStatusEnum.UP.getCode());
         return productInfoList;
     }
 
+    /**
+     * 分页查询所有
+     * @param pageable
+     * @return
+     */
     @Override
     public Page<ProductInfo> findAll(Pageable pageable) {
         Page<ProductInfo> productInfos = mProductInfoRespository.findAll(pageable);
         return productInfos;
     }
 
+    /**
+     * 新增 更新
+     * @param productInfo
+     * @return
+     */
     @Override
     public ProductInfo save(ProductInfo productInfo) {
         ProductInfo result = mProductInfoRespository.save(productInfo);
         return result;
     }
 
+    /**
+     * 加库存
+     * @param cartDTOS
+     */
     @Override
     @Transactional
     public void increaseStock(List<CartDTO> cartDTOS) {
@@ -63,6 +86,10 @@ public class ProductInfoServiceImpl implements ProductInfoService {
         }
     }
 
+    /**
+     * 减库存
+     * @param cartDTOS
+     */
     @Override
     @Transactional
     public void decreaseStock(List<CartDTO> cartDTOS) {

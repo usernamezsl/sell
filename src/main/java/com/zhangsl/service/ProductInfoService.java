@@ -13,21 +13,21 @@ import java.util.List;
  */
 public interface ProductInfoService {
 
-    //查询一条数据
+
     ProductInfo findOne(String productInfoId);
 
-    //查询所有已上架的商品
+
     List<ProductInfo> findUpAll();
 
-    //分页查询所有
+
     Page<ProductInfo> findAll(Pageable pageable);
 
-    //新增 更新
+
     ProductInfo save(ProductInfo productInfo);
 
-    //加库存
+
     void increaseStock(List<CartDTO> cartDTOS);
 
-    //减库存
+
     void decreaseStock(List<CartDTO> cartDTOS);
 }
